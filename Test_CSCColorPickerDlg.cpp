@@ -168,7 +168,7 @@ HCURSOR CTestCSCColorPickerDlg::OnQueryDragIcon()
 void CTestCSCColorPickerDlg::OnBnClickedOk()
 {
 	CSCColorPicker picker;
-	if (picker.DoModal(_T("Color Picker"), Gdiplus::Color::Transparent) == IDCANCEL)
+	if (picker.DoModal(/*_T("Color Picker"), Gdiplus::Color::Transparent*/) == IDCANCEL)
 		return;
 
 	Gdiplus::Color cr = picker.get_selected_color();

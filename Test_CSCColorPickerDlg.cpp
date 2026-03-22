@@ -108,7 +108,7 @@ BOOL CTestCSCColorPickerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	SetTimer(timer_show_picker, 10, NULL);
+	SetTimer(timer_show_picker, 100, NULL);
 
 	RestoreWindowPosition(&theApp, this);
 
@@ -173,8 +173,6 @@ void CTestCSCColorPickerDlg::OnBnClickedOk()
 
 	Gdiplus::Color cr = picker.get_selected_color();
 	TRACE(_T("sel color = %s\n"), get_color_str(cr));
-
-	OnBnClickedCancel();
 }
 
 void CTestCSCColorPickerDlg::OnBnClickedCancel()

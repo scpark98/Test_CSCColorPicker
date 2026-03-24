@@ -9,7 +9,6 @@
 #include "afxdialogex.h"
 
 #include "Common/Functions.h"
-#include "Common/CDialog/CSCColorPicker/SCColorPicker.h"
 
 
 #ifdef _DEBUG
@@ -73,6 +72,7 @@ BEGIN_MESSAGE_MAP(CTestCSCColorPickerDlg, CDialogEx)
 	ON_BN_CLICKED(IDCANCEL, &CTestCSCColorPickerDlg::OnBnClickedCancel)
 	ON_WM_WINDOWPOSCHANGED()
 	ON_WM_TIMER()
+	ON_REGISTERED_MESSAGE(Message_CSCColorPicker, &CTestCSCColorPickerDlg::on_message_CSCColorPicker)
 END_MESSAGE_MAP()
 
 
@@ -108,7 +108,9 @@ BOOL CTestCSCColorPickerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	SetTimer(timer_show_picker, 100, NULL);
+
+	m_color_picker.create(this, _T("Color Picker"), false);
+	//SetTimer(timer_show_picker, 100, NULL);
 
 	RestoreWindowPosition(&theApp, this);
 
@@ -153,7 +155,11 @@ void CTestCSCColorPickerDlg::OnPaint()
 	}
 	else
 	{
-		CDialogEx::OnPaint();
+		CPaintDC dc(this);
+		CRect rc;
+
+		GetClientRect(rc);
+		dc.FillSolidRect(rc, m_cr_back.ToCOLORREF());
 	}
 }
 
@@ -167,12 +173,21 @@ HCURSOR CTestCSCColorPickerDlg::OnQueryDragIcon()
 
 void CTestCSCColorPickerDlg::OnBnClickedOk()
 {
-	CSCColorPicker picker;
-	if (picker.DoModal(/*_T("Color Picker"), Gdiplus::Color::Transparent*/) == IDCANCEL)
-		return;
+	bool modal_test = false;
 
-	Gdiplus::Color cr = picker.get_selected_color();
-	TRACE(_T("sel color = %s\n"), get_color_str(cr));
+	if (modal_test)
+	{
+		CSCColorPicker picker;
+		if (picker.DoModal(/*_T("Color Picker"), Gdiplus::Color::Transparent*/) == IDCANCEL)
+			return;
+
+		Gdiplus::Color cr = picker.get_selected_color();
+		TRACE(_T("sel color = %s\n"), get_color_str(cr));
+	}
+	else
+	{
+		m_color_picker.ShowWindow(SW_SHOW);
+	}
 }
 
 void CTestCSCColorPickerDlg::OnBnClickedCancel()
@@ -199,4 +214,12 @@ void CTestCSCColorPickerDlg::OnTimer(UINT_PTR nIDEvent)
 	}
 
 	CDialogEx::OnTimer(nIDEvent);
+}
+
+LRESULT CTestCSCColorPickerDlg::on_message_CSCColorPicker(WPARAM wParam, LPARAM lParam)
+{
+	auto msg = (CSCColorPickerMessage*)wParam;
+	m_cr_back = msg->cr_selected;
+	Invalidate();
+	return 0;
 }

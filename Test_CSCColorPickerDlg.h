@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "Common/CDialog/CSCColorPicker/SCColorPicker.h"
+
 
 // CTestCSCColorPickerDlg 대화 상자
 class CTestCSCColorPickerDlg : public CDialogEx
@@ -11,6 +13,11 @@ class CTestCSCColorPickerDlg : public CDialogEx
 // 생성입니다.
 public:
 	CTestCSCColorPickerDlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
+
+	CSCColorPicker	m_color_picker;
+	LRESULT			on_message_CSCColorPicker(WPARAM wParam, LPARAM lParam);
+
+	Gdiplus::Color	m_cr_back;
 
 	enum TIMER_ID
 	{

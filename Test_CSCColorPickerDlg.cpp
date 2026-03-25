@@ -62,6 +62,8 @@ CTestCSCColorPickerDlg::CTestCSCColorPickerDlg(CWnd* pParent /*=nullptr*/)
 void CTestCSCColorPickerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_BUTTON_MODAL, m_button_modal);
+	DDX_Control(pDX, IDC_BUTTON_MODELESS, m_button_modeless);
 }
 
 BEGIN_MESSAGE_MAP(CTestCSCColorPickerDlg, CDialogEx)
@@ -112,10 +114,12 @@ BOOL CTestCSCColorPickerDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
+	m_button_modal.set_round(4, Gdiplus::Color::Gray);// , m_cr_back);
+	m_button_modeless.set_round(4, Gdiplus::Color::Gray);// , m_cr_back);
 
 	m_color_picker.create(this, _T("Color Picker"), false);
 
-	RestoreWindowPosition(&theApp, this);
+	RestoreWindowPosition(&theApp, this, _T(""), false, false);
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -226,6 +230,8 @@ LRESULT CTestCSCColorPickerDlg::on_message_CSCColorPicker(WPARAM wParam, LPARAM 
 {
 	auto msg = (CSCColorPickerMessage*)wParam;
 	m_cr_back = msg->cr_selected;
+	m_button_modal.set_parent_back_color(m_cr_back);
+	m_button_modeless.set_parent_back_color(m_cr_back);
 	Invalidate();
 	return 0;
 }
@@ -241,7 +247,7 @@ void CTestCSCColorPickerDlg::OnLButtonUp(UINT nFlags, CPoint point)
 void CTestCSCColorPickerDlg::OnBnClickedButtonModal()
 {
 	CSCColorPicker picker;
-	if (picker.DoModal(/*_T("Color Picker"), Gdiplus::Color::Transparent*/) == IDCANCEL)
+	if (picker.DoModal(this/*, _T("Color Picker"), Gdiplus::Color::Transparent*/) == IDCANCEL)
 		return;
 
 	m_cr_back = picker.get_selected_color();

@@ -9,13 +9,9 @@
 - 사용자 정의색을 표시하는 영역이 필요하고 추가까지 할 수 있는 기능 필요(Goggle Slides의 색상선택박스와 동일)
 
 [사용 방법]
-- CSCColorPicker picker;
-  picker.DoModal();	//가장 최근 선택했던 색이 선택된 상태로 실행
-  picker.DoModal(_T("Color Picker"), Gdiplus::Color(255, 255, 0, 191)); //제목과 색상을 지정하여 실행
-  picker.get_color();
+- SCColorPicker.h 참조
 
 [수정할 내용]
-- 클립보드로 복사 버튼 추가
 
 [수정된 내용]
 - recent color는 총 8개를 표시할 수 있지만 정보를 지우진 않는다. 마우스 휠 또는 드래그로 스크롤되도록 한다.
@@ -23,8 +19,4 @@
 - 반투명 회색일 경우 선택 표시가 흰색이라 잘 구분되지 않음
 - hsv edit 추가
 - 팝업메뉴 표시(툴팁, 최근 색상 내보내기, 가져오기, ARGB 표시 선택(ARGB, ABGR, RGBA, BGRA)
-
-[CSCDropperDlg]
-- create()으로 동적 생성? CSCShapeDlg를 사용해야 깔끔한 원 모양의 윈도우 표시될듯.(CreateEllipticRgn은 깔끔하지 않음)
-- dropper를 클릭하면 picker는 숨기고 캡처 후 해당 이미지를 dropper에게 전달
-- dropper는 현재 커서 중심의 m x m 크기의 이미지를 원형 png 이미지로 그린 후 이를 렌더한다.
+- 클립보드로 복사 버튼 추가

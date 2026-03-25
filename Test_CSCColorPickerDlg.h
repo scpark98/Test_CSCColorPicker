@@ -5,7 +5,7 @@
 #pragma once
 
 #include "Common/CDialog/CSCColorPicker/SCColorPicker.h"
-
+#include "Common/CButton/GdiButton/GdiButton.h"
 
 // CTestCSCColorPickerDlg 대화 상자
 class CTestCSCColorPickerDlg : public CDialogEx
@@ -52,4 +52,6 @@ public:
 	afx_msg void OnBnClickedButtonModal();
 	afx_msg void OnBnClickedButtonModeless();
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	CGdiButton m_button_modal;
+	CGdiButton m_button_modeless;
 };

@@ -9,7 +9,7 @@
 #include "afxdialogex.h"
 
 #include "Common/Functions.h"
-
+#include "Common/MemoryDC.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -73,6 +73,10 @@ BEGIN_MESSAGE_MAP(CTestCSCColorPickerDlg, CDialogEx)
 	ON_WM_WINDOWPOSCHANGED()
 	ON_WM_TIMER()
 	ON_REGISTERED_MESSAGE(Message_CSCColorPicker, &CTestCSCColorPickerDlg::on_message_CSCColorPicker)
+	ON_WM_LBUTTONUP()
+	ON_BN_CLICKED(IDC_BUTTON_MODAL, &CTestCSCColorPickerDlg::OnBnClickedButtonModal)
+	ON_BN_CLICKED(IDC_BUTTON_MODELESS, &CTestCSCColorPickerDlg::OnBnClickedButtonModeless)
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
@@ -110,7 +114,6 @@ BOOL CTestCSCColorPickerDlg::OnInitDialog()
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
 
 	m_color_picker.create(this, _T("Color Picker"), false);
-	//SetTimer(timer_show_picker, 100, NULL);
 
 	RestoreWindowPosition(&theApp, this);
 
@@ -155,11 +158,21 @@ void CTestCSCColorPickerDlg::OnPaint()
 	}
 	else
 	{
-		CPaintDC dc(this);
+		CPaintDC dc1(this);
 		CRect rc;
 
 		GetClientRect(rc);
-		dc.FillSolidRect(rc, m_cr_back.ToCOLORREF());
+
+		CMemoryDC dc(&dc1, &rc);
+		Gdiplus::Graphics g(dc.GetSafeHdc());
+
+		if (m_cr_back.GetA() < 255)
+		{
+			Gdiplus::TextureBrush tb(CSCGdiplusBitmap::checker_bmp(6), Gdiplus::WrapModeTile);
+			g.FillRectangle(&tb, CRect_to_gpRect(rc));
+		}
+
+		g.FillRectangle(&Gdiplus::SolidBrush(m_cr_back), CRect_to_gpRect(rc));
 	}
 }
 
@@ -177,16 +190,9 @@ void CTestCSCColorPickerDlg::OnBnClickedOk()
 
 	if (modal_test)
 	{
-		CSCColorPicker picker;
-		if (picker.DoModal(/*_T("Color Picker"), Gdiplus::Color::Transparent*/) == IDCANCEL)
-			return;
-
-		Gdiplus::Color cr = picker.get_selected_color();
-		TRACE(_T("sel color = %s\n"), get_color_str(cr));
 	}
 	else
 	{
-		m_color_picker.ShowWindow(SW_SHOW);
 	}
 }
 
@@ -222,4 +228,35 @@ LRESULT CTestCSCColorPickerDlg::on_message_CSCColorPicker(WPARAM wParam, LPARAM 
 	m_cr_back = msg->cr_selected;
 	Invalidate();
 	return 0;
+}
+
+void CTestCSCColorPickerDlg::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	OnBnClickedOk();
+
+	CDialogEx::OnLButtonUp(nFlags, point);
+}
+
+void CTestCSCColorPickerDlg::OnBnClickedButtonModal()
+{
+	CSCColorPicker picker;
+	if (picker.DoModal(/*_T("Color Picker"), Gdiplus::Color::Transparent*/) == IDCANCEL)
+		return;
+
+	m_cr_back = picker.get_selected_color();
+	TRACE(_T("sel color = %s\n"), get_color_str(m_cr_back));
+	Invalidate();
+}
+
+void CTestCSCColorPickerDlg::OnBnClickedButtonModeless()
+{
+	m_color_picker.ShowWindow(m_color_picker.IsWindowVisible() ? SW_HIDE : SW_SHOW);
+}
+
+BOOL CTestCSCColorPickerDlg::OnEraseBkgnd(CDC* pDC)
+{
+	// TODO: 여기에 메시지 처리기 코드를 추가 및/또는 기본값을 호출합니다.
+	return FALSE;
+	return CDialogEx::OnEraseBkgnd(pDC);
 }

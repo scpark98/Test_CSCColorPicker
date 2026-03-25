@@ -48,4 +48,8 @@ public:
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnWindowPosChanged(WINDOWPOS* lpwndpos);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnBnClickedButtonModal();
+	afx_msg void OnBnClickedButtonModeless();
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };

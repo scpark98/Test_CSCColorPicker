@@ -247,10 +247,13 @@ void CTestCSCColorPickerDlg::OnLButtonUp(UINT nFlags, CPoint point)
 void CTestCSCColorPickerDlg::OnBnClickedButtonModal()
 {
 	CSCColorPicker picker;
-	if (picker.DoModal(this/*, _T("Color Picker"), Gdiplus::Color::Transparent*/) == IDCANCEL)
+	if (picker.DoModal(this/*, Gdiplus::Color::Yellow, _T("Color Picker"), Gdiplus::Color::Transparent*/) == IDCANCEL)
 		return;
 
 	m_cr_back = picker.get_selected_color();
+	m_button_modal.set_parent_back_color(m_cr_back);
+	m_button_modeless.set_parent_back_color(m_cr_back);
+
 	TRACE(_T("sel color = %s\n"), get_color_str(m_cr_back));
 	Invalidate();
 }

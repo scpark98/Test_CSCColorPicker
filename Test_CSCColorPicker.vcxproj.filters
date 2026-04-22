@@ -54,7 +54,7 @@
     <ClInclude Include="..\..\Common\ui\CSCTitleBar\SCTitleBar.h">
       <Filter>Common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Common\CEdit\SCEdit\SCEdit.h">
+    <ClInclude Include="..\..\Common\CEdit\CSCStaticEdit\SCStaticEdit.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Common\CStatic\SCStatic\SCStatic.h">
@@ -95,7 +95,7 @@
     <ClCompile Include="..\..\Common\ui\CSCTitleBar\SCTitleBar.cpp">
       <Filter>Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Common\CEdit\SCEdit\SCEdit.cpp">
+    <ClCompile Include="..\..\Common\CEdit\CSCStaticEdit\SCStaticEdit.cpp">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Common\CStatic\SCStatic\SCStatic.cpp">

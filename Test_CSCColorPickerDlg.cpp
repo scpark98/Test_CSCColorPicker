@@ -118,7 +118,7 @@ BOOL CTestCSCColorPickerDlg::OnInitDialog()
 	m_button_modeless.set_round(4, Gdiplus::Color::Gray);// , m_cr_back);
 
 	m_color_picker.create(this, _T("Color Picker"), false);
-	m_color_picker.set_use_shared_color();
+	//m_color_picker.set_use_shared_color();
 
 	RestoreWindowPosition(&theApp, this, _T(""), false, false);
 
@@ -191,14 +191,6 @@ HCURSOR CTestCSCColorPickerDlg::OnQueryDragIcon()
 
 void CTestCSCColorPickerDlg::OnBnClickedOk()
 {
-	bool modal_test = false;
-
-	if (modal_test)
-	{
-	}
-	else
-	{
-	}
 }
 
 void CTestCSCColorPickerDlg::OnBnClickedCancel()
@@ -248,7 +240,7 @@ void CTestCSCColorPickerDlg::OnLButtonUp(UINT nFlags, CPoint point)
 void CTestCSCColorPickerDlg::OnBnClickedButtonModal()
 {
 	CSCColorPicker picker;
-	picker.set_use_shared_color();
+	//picker.set_use_shared_color();
 
 	if (picker.DoModal(this, Gdiplus::Color(128, 211, 222, 33), _T("Color Picker")) == IDCANCEL)
 		return;

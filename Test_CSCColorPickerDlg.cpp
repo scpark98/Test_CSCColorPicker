@@ -242,7 +242,7 @@ void CTestCSCColorPickerDlg::OnBnClickedButtonModal()
 	CSCColorPicker picker;
 	//picker.set_use_shared_color();
 
-	if (picker.DoModal(this, Gdiplus::Color(128, 211, 222, 33), _T("Color Picker")) == IDCANCEL)
+	if (picker.DoModal(this, m_cr_back) == IDCANCEL)
 		return;
 
 	m_cr_back = picker.get_selected_color();
